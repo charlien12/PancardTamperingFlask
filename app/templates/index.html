@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PAN Card Tempering Detection</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+        body {
+            background: #f8f9fa;
+        }
+        .container {
+            margin-top: 50px;
+        }
+        .card {
+            border-radius: 15px;
+            box-shadow: 0 6px 12px rgba(0,0,0,0.1);
+        }
+        .result-img {
+            max-width: 100%;
+            border-radius: 10px;
+            margin: 10px 0;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="card p-4">
+            <h2 class="text-center text-primary mb-4">PAN Card Tempering Detection</h2>
+            
+            <!-- Upload Form -->
+            <form method="POST" enctype="multipart/form-data" class="text-center">
+                <div class="mb-3">
+                    <input type="file" class="form-control" name="file_upload" required>
+                </div>
+                <button type="submit" class="btn btn-success">Check PAN Card</button>
+            </form>
+
+            {% if pred %}
+            <hr>
+            <!-- Results -->
+            <div class="text-center">
+                <h4 class="mt-3">🔍 Result: <span class="text-info">{{ pred }}</span></h4>
+                <h4>Status: 
+                    {% if "Tempered" in status %}
+                        <span class="text-danger fw-bold">{{ status }}</span>
+                    {% else %}
+                        <span class="text-success fw-bold">{{ status }}</span>
+                    {% endif %}
+                </h4>
+            </div>
+
+            <!-- Images -->
+            <div class="row mt-4">
+                <div class="col-md-6 text-center">
+                    <h6>Uploaded Image</h6>
+                    <img src="{{ url_for('static', filename='generated/image_uploaded.jpg') }}" class="result-img shadow">
+                </div>
+                <div class="col-md-6 text-center">
+                    <h6>Original Image</h6>
+                    <img src="{{ url_for('static', filename='generated/image_original.jpg') }}" class="result-img shadow">
+                </div>
+            </div>
+            <div class="row mt-4">
+                <div class="col-md-6 text-center">
+                    <h6>Differences</h6>
+                    <img src="{{ url_for('static', filename='generated/image_diff.jpg') }}" class="result-img shadow">
+                </div>
+                <div class="col-md-6 text-center">
+                    <h6>Threshold</h6>
+                    <img src="{{ url_for('static', filename='generated/image_thresh.jpg') }}" class="result-img shadow">
+                </div>
+            </div>
+            {% endif %}
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>
